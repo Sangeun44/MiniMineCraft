@@ -1,0 +1,98 @@
+MILESTONE 1 -
+Alexis Ward:
+
+11/18 - Myles sent me links on FBM and ray-block intersection that were quite helpful:
+	https://thebookofshaders.com/13/
+	
+https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection
+
+
+11/19 - Adam told me to switch from using ray-box intersection using a for loop to using ray marching.
+
+Nicholas Magarino:
+2017-11-17 4:00pm: Mauricio helped me understand how to go about setting up the origins of my chunk
+	           positions, going off the way cubes are set up in the base code.  I can manually
+		   create the origins of each chunk as I create them, store them in the Chunk, then
+		   when I try to access a block in world space, I can integer divide the position by 16
+		   to know which chunk that position belongs to, and add it to that Chunk.
+2017-11-18 1:00pm: Rudraksha explained to me that I should set up the colors of each chunk's blocks in 
+		   the Chunk's create function rather than in MyGL's DrawScene function.
+
+Sangeun Lee:
+Mauricio Mutai 11/17: player instantiate not working
+
+Hannah 11/18
+:	      dTime and ratio
+
+Mauricio 11/19:
+	      1) from position to Index 
+	2) fixing camera’s ref when crossing axis
+
+MILESTONE 2 -
+Alexis Ward:
+No help, besides glsl websites.
+
+Nicholas Magarino:
+2017-11-28 1:30pm: Adam helped me fix a bug in my code where the Lambert Shader would not properly
+		 draw with the correct colors passed through the VBOs.  It was as simple as changing
+	         fs_Col, and out variable, to be able to vs_Col instead of u_Color (a uniform variable).
+		 Adam also pointed out a better way to create chunks in both positive and negative 
+		 directions.  Instead of checking the x, z bounds of the world to expand, instead
+		 check if there is are any chunks in the direction of possible expansion, and only do so
+  	         if no chunks are present.
+2017-12-1 4:00pm: Tabatha gave me a good idea of how to create the overlay for swimming in water or lava.
+		She suggested drawing a quad, but never setting it in proper world space coordinates
+		by not applying the view or projection matrices.  Thus, the quad is rendered in NDC 
+		space, from -1 to 1.  
+2017-12-3 5:00pm: Mauricio helped me understand how I should go about multithreading, as a result of a bug
+		with it.  Originally, when my terrain expanded, the blocks in the new chunks would be
+		set correctly and could be collided with, but were never rendered.  This was because in
+		the multithreading, the create function was never initially called on the chunks.  So,
+		he suggested I call create on the chunks outside of the threads themselves, and only 	
+		when neccessary.
+2017-12-3 8:00pm: Adam further helped me understand how to go about multithreading, and in a cleaner way.
+		Essentially, there should be one QRunnable associated with each new chunk being created,
+		where within the run() function the blocks for each chunk are set, and the VBO data for 	
+		it created.  However, outside the thread, the VBOs are binded.		
+
+Sangeun Lee:
+
+
+OH Adam Mally - shape of river
+, using lake at the end
+OH Tabetha - 
+	river concept
+
+
+Grace - 
+	the river class and its role
+
+MILESTONE 3 -
+Nicholas Magarino:
+2017-12-7 1:30pm: Rudraksha gave me an idea of how I should go about implementing an inventory.  He 
+	          suggested using textures to draw the GUI itself and the numbers associated with the
+		  amounts of each block type.  In addition, he suggested I use a drawable block selection
+		  indicator.
+2017-12-8 1:30pm: Adam explained to me how I could fix some of my multithreaded chunk creation issues.
+		  He suggested I pass two types of QRunnables into separate threadpools, one to set
+		  the block types in each chunk, and another to create the VBO data for each chunk.
+2017-12-8 4:00pm: Joe helped me implement the interleaved VBOs.  Specifically, he explained to me how
+		  the buffer offset in shader program would work, that the "attr" variables for a VBO
+		  of vertex data needs offsets to specify which floats coorelate to what vertex values.
+2017-12-9 1:30pm: Mauricio helped me understand how to fix rendering issues for transparent blocks.
+	          Two render passes need to be done over all blocks in the terrain, first for opaque
+		  blocks then for transparent ones.  This could be achieved with a bool in the shader
+		  program, which specifies whether the draw fucntion binds and draws from the opaque
+ 		  or transparent VBOs.
+Sangeun Lee:
+
+OH 
+	Adam - 
+sky demo
+
+OH 	
+Tabetha - 
+river
+
+        Book of Shaders
+	- fbm
